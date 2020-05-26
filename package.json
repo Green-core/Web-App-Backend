@@ -1,5 +1,5 @@
 {
-  "name": "mobile-app-backend",
+  "name": "web-app-backend",
   "version": "1.0.0",
   "description": "Green Core Mobile App backend",
   "main": "server.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Green-core/Mobile-App-Backend.git"
+    "url": "git+https://github.com/Green-core/Web-App-Backend.git"
   },
   "author": "Green-Core",
   "license": "ISC",
