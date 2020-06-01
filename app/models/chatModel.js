@@ -54,6 +54,21 @@ const ChatSchema = new mongoose.Schema({
     closed: {
         type: Boolean,
         default: false
+    },
+    newFromUser: {
+        type: Boolean,
+        default: false
+    },
+    newFromAdmin: {
+        type: Boolean,
+        default: true
+    },
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedBy: {
+        type: ObjectId,
     }
 })
 

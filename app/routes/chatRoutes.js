@@ -11,28 +11,28 @@ const { ObjectId } = require('mongodb');
 
 router.post("/reply", (req, res) => {
 
-    const reply = {
-        _id: new ObjectId(),
-        reply: req.body.reply,
-        from: req.body.from,
-        fromID: new ObjectId(req.body.fromId),
-        date : new Date()
-    }
-    
-    Chat.update(
-        { _id: new ObjectId(req.body.id) },
-        {
-            updatedAt: new Date(),
-            $push: { replies: reply}
-        },
-        { upsert: true }
-    ).then((result)=>{
-        res.send(result)
+  const reply = {
+    _id: new ObjectId(),
+    reply: req.body.reply,
+    from: req.body.from,
+    fromID: new ObjectId(req.body.fromId),
+    date: new Date()
+  }
+
+  Chat.update(
+    { _id: new ObjectId(req.body.id) },
+    {
+      updatedAt: new Date(),
+      $push: { replies: reply }
+    },
+    { upsert: true }
+  ).then((result) => {
+    res.send(result)
+  })
+    .catch((err) => {
+      console.log(err)
     })
-    .catch((err)=>{
-        console.log(err)
-    })
-    res.status(200)
+  res.status(200)
 })
 
 
@@ -43,18 +43,18 @@ router.post("/reply", (req, res) => {
  */
 
 router.post("/send-message", (req, res) => {
-    const chat = new Chat(req.body)
+  const chat = new Chat(req.body)
 
-    chat
-        .save()
-        .then((result) => {
-            res.send(result)
-        })
-        .catch((err) => {
-            res.status(400)
-            console.log(err)
-        })
-    res.status(200)
+  chat
+    .save()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      res.status(400)
+      console.log(err)
+    })
+  res.status(200)
 })
 
 
@@ -66,31 +66,101 @@ router.post("/send-message", (req, res) => {
  */
 
 router.get("/get-all", async (req, res) => {
-    try {
-      const chats = await Chat.find();
-      if (!chats) throw Error("No chats exist");
-      res.json(chats);
-    } catch (e) {
-      res.status(400).json({ msg: e.message });
-    }
-  });
+  try {
+    const chats = await Chat.find({deleted:{$ne: true} });
+    if (!chats) throw Error("No chats exist");
+    res.json(chats);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+});
 
 
-  /**
-   * @route   POST /chats/get-one
-   * @desc    Retrieve chat
-   * @access  Private
-   */
-  
-  router.post("/get-one", (req, res) => {
-    Chat.findById(req.body.id)
+/**
+ * @route   POST /chats/get-one
+ * @desc    Retrieve chat
+ * @access  Private
+ */
+
+router.post("/get-one", (req, res) => {
+  Chat.findById(req.body.id)
     .then((result) => {
       res.json(result);
     })
     .catch((err) => {
       console.log(err);
     });
-    res.status(200);
-  });
-  
-  module.exports = router
+  res.status(200);
+});
+
+
+
+/**
+ * @route   GET /chats/get-all-unread
+ * @desc    Retrieve all unread chats
+ * @access  Private
+ */
+
+router.get("/get-all-unread", async (req, res) => {
+  try {
+    const chats = await Chat.find({ $and:[{newFromUser: true}, {deleted:{$ne: true} }]});
+    if (!chats) throw Error("No chats exist");
+    res.json(chats);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+});
+
+
+/**
+ * @route   POST /chats/viewed-message
+ * @desc    Update viewed message
+ * @access  Private
+ */
+
+router.post("/viewed-message", (req, res) => {
+
+  Chat.update(
+    { _id: new ObjectId(req.body.id) },
+    {
+      updatedAt: new Date(),
+      newFromUser: false
+    },
+    { upsert: true }
+  ).then((result) => {
+    res.send(result)
+  })
+    .catch((err) => {
+      console.log(err)
+    })
+  res.status(200)
+})
+
+
+/**
+ * @route   POST /chats/delete-chat
+ * @desc    Delete chat
+ * @access  Private
+ */
+
+router.post("/delete-chat", (req, res) => {
+
+  Chat.update(
+    { _id: new ObjectId(req.body.id) },
+    {
+      deleted: true,
+      deletedBy: req.body.userId
+    },
+    { upsert: true }
+  ).then((result) => {
+    res.send(result)
+  })
+    .catch((err) => {
+      console.log(err)
+    })
+  res.status(200)
+})
+
+
+
+module.exports = router
