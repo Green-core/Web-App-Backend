@@ -36,11 +36,13 @@ app.get("/", (req, res) => {
 
 // routes
 const userRoutes = require("./app/routes/users.routes");
-const chatRoutes = require("./app/routes/chatRoutes")
+const chatRoutes = require("./app/routes/chatRoutes");
+const signupRoutes=require("./app/routes/signup");
 
 // Use Routes
 app.use("/users", userRoutes);
-app.use("/chats", chatRoutes)
+app.use("/chats", chatRoutes);
+app.use("/signup",signupRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
