@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 // routes
 const userRoutes = require("./app/routes/users.routes");
 const chatRoutes = require("./app/routes/chatRoutes");
-const signupRoutes=require("./app/routes/signup");
+const signupRoutes = require("./app/routes/signup");
 
 // Use Routes
 app.use("/users", userRoutes);
