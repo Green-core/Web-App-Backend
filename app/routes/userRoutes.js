@@ -84,4 +84,25 @@ router.put("/update/:id", (req, res) => {
   res.status(200);
 });
 
+
+/**
+ * @route   GET /users/get-all
+ * @desc    Retrieve all users
+ * @access  Private
+ */
+
+router.get("/get-all-admins", async (req, res) => {
+  try {
+    const users = await User.find({role: "admin"});
+    if (!users) throw Error("No admins exist");
+    console.log(users)
+    res.json(users);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+
+
+  }
+});
+
+
 module.exports = router;
