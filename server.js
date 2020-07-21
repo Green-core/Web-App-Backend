@@ -35,14 +35,20 @@ app.get("/", (req, res) => {
 });
 
 // routes
-const userRoutes = require("./app/routes/users.routes");
+//const userRoutes = require("./app/routes/users.routes");
 const chatRoutes = require("./app/routes/chatRoutes");
-const signupRoutes=require("./app/routes/signup");
+const signupRoutes = require("./app/routes/signup");
+const unitRoutes = require("./app/routes/unitRoutes");
+const userRoutes = require("./app/routes/userRoutes");
+const plantRoutes = require("./app/routes/plantTips.routes");
+
 
 // Use Routes
 app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
-app.use("/signup",signupRoutes)
+app.use("/signup",signupRoutes);
+app.use("/units", unitRoutes);
+app.use("/plants", plantRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
