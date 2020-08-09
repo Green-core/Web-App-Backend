@@ -34,7 +34,7 @@ router.get("/get/:id", (req, res) => {
       if (!plant) {
         res.status(400).send({ err: "Cannot retreive plant details" });
       }
-      // console.log(plant);
+       console.log(plant);
       res.status(200).send(plant);
     })
     .catch((err) => {
@@ -44,7 +44,7 @@ router.get("/get/:id", (req, res) => {
 });
 
 /**
- * @route   GET /plants/add
+ * @route   POST /plants/add
  * @desc    Add new plant type
  * @access  Private
  */
@@ -84,7 +84,7 @@ router.post("/add", (req, res) => {
  */
 
 router.post("/addTips/:id", (req, res) => {
-  const tip = { title: req.body.title, body: req.body.body };
+  const tip = { title: req.body.title, body: req.body.description };
   Plant.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -114,14 +114,11 @@ router.post("/updateTips/:id", (req, res) => {
   Plant.findOneAndUpdate(
     { _id: req.body.plantId, "tips._id": req.params.id },
     {
-      $set: {
-        tips: [
+      $set: 
           {
-            title: req.body.title,
-            body: req.body.body,
+            "tips.$.title": req.body.title,
+            "tips.$.body": req.body.description,
           },
-        ],
-      },
     },
     { new: true } // return updated document
   )
