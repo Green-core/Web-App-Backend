@@ -135,4 +135,34 @@ router.post("/updateTips/:id", (req, res) => {
     });
 });
 
+/**
+ * @route   POST /plants/removeTips/:id
+ * @desc    Remove plant tip
+ * @access  Private
+ */
+
+router.post("/removeTips/:id", (req, res) => {
+ // const tip = { title: req.body.title, body: req.body.description };
+  Plant.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $pull: { tips: {_id:req.body.tipId} },
+    },
+    { new: true } // return updated document
+  )
+    .then((plant) => {
+      if (!plant) {
+        res.status(400).send({ err: "Cannot remove plant tip" });
+        
+      }
+      console.log(plant);
+      res.status(200).send(plant);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send(err);
+    });
+});
+
+
 module.exports = router;
