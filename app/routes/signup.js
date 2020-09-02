@@ -2,7 +2,7 @@ const router = require('express').Router();
 //const cors =require("cors");
 // const jwt = require("jsonwebtoken");
 // const bycypt=require("bycrypt");
-let Signup = require('../models/signup.model');
+let Signup = require('../models/User');
 var users=[
     {
         email:'has@gmail.com',password:'111'
@@ -18,22 +18,17 @@ router.route('/').get((req,res)=>{
 });
 
 router.route('/add').post((req,res) =>{
-    const firstname= req.body.firstname;
-    const lastname= req.body.lastname;
-    const gender= req.body.gender;
-    const emailadress= req.body.emailadress;
+    const name= req.body.name;
+    const email= req.body.email;
     const password= req.body.password;
-    const contactno= req.body.contactno;
-    const adress= req.body.adress;
+    const mobile= req.body.mobile;
+    
 
     const newSignup= new Signup({
-        firstname,
-        lastname,
-        gender,
-        emailadress,
+        name,
+        email,
         password,
-        contactno,
-        adress,
+        mobile,
     });
 
     newSignup.save()

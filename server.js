@@ -41,14 +41,17 @@ const signupRoutes = require("./app/routes/signup");
 const unitRoutes = require("./app/routes/unitRoutes");
 const userRoutes = require("./app/routes/userRoutes");
 const plantRoutes = require("./app/routes/plantTips.routes");
-
+const signin = require("./app/routes/signin");
 
 // Use Routes
+app.use("/user",signin);
+
 app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
 app.use("/signup",signupRoutes);
 app.use("/units", unitRoutes);
 app.use("/plants", plantRoutes);
+app.use("/signin",signin);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
