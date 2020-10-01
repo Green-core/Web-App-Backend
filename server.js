@@ -26,6 +26,11 @@ mongoose
     process.exit();
   });
 
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3001"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -41,6 +46,7 @@ const signupRoutes = require("./app/routes/signup");
 const unitRoutes = require("./app/routes/unitRoutes");
 const userRoutes = require("./app/routes/userRoutes");
 const plantRoutes = require("./app/routes/plantTips.routes");
+const dashboardRoutes = require("./app/routes/dashboardRoutes")
 
 
 // Use Routes
@@ -49,6 +55,7 @@ app.use("/chats", chatRoutes);
 app.use("/signup",signupRoutes);
 app.use("/units", unitRoutes);
 app.use("/plants", plantRoutes);
+app.use("/dashboard", dashboardRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
