@@ -47,15 +47,18 @@ const unitRoutes = require("./app/routes/unitRoutes");
 const userRoutes = require("./app/routes/userRoutes");
 const plantRoutes = require("./app/routes/plantTips.routes");
 const dashboardRoutes = require("./app/routes/dashboardRoutes")
-
+const signin = require("./app/routes/signin");
 
 // Use Routes
+app.use("/user",signin);
+
 app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
 app.use("/signup",signupRoutes);
 app.use("/units", unitRoutes);
 app.use("/plants", plantRoutes);
 app.use("/dashboard", dashboardRoutes)
+app.use("/signin",signin);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
