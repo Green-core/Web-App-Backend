@@ -3,7 +3,9 @@ const router = express.Router()
 const Chat = require("../models/chatModel")
 const User = require("../models/userModel")
 const Units = require("../models/unitModel")
+const Plant = require("../models/plantTips.model.js");
 const { ObjectId } = require('mongodb');
+const { find } = require("../models/chatModel")
 
 
 /**
@@ -72,6 +74,44 @@ router.get("/get-total-unread-chats", async (req, res) => {
     res.status(400).json({ msg: e.message, status: 400 })
   }
 });
+
+
+
+/**
+ * @route POST /dashboard/district-unit-count
+ * @desc Get unit count
+ * @access Private
+ */
+
+router.post("/district-unit-count", async (req, res) => {
+  Units.find({ "location": req.body.location }).count()
+  .then((result) => {
+    res.json(result);
+    res.status(200)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400)
+  });
+})
+
+
+
+/**
+ * @route GET /dashboard/get-plant-count
+ * @desc Get plant count
+ * @access Private
+ */
+
+router.get("/get-plant-count", async (req, res) => {
+  Plant.find().count()
+  .then((result) => {
+    res.json({result:result, status: 200});
+  })
+  .catch((err) => {
+    res.status(400).json({ msg: e.message, status: 400 })
+  });
+})
 
 
 module.exports = router
