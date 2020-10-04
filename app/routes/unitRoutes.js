@@ -39,9 +39,7 @@ router.get("/get-all", async (req, res) => {
         res.json(units);
     } catch (e) {
         console.log('failed')
-        res.status(400).json({ msg: e.message });
-
-
+        res.status(400).json({ msg: e.message })
     }
 });
 
@@ -88,6 +86,25 @@ router.put("/update/:id", (req, res) => {
         });
     res.status(200);
 
+});
+
+
+/**
+ * @route   GET /units/get-vulnerable-units
+ * @desc    Retrieve unit
+ * @access  Private
+ */
+
+router.get("/get-vulnerable-units", (req, res) => {
+    Unit.find({vulnerable: true})
+        .then((units) => {
+            res.json(units);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400)
+        });
+    res.status(200);
 });
 
 module.exports = router;
