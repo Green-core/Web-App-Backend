@@ -67,7 +67,7 @@ router.post("/send-message", (req, res) => {
 
 router.get("/get-all", async (req, res) => {
   try {
-    const chats = await Chat.find({deleted:{$ne: true} });
+    const chats = await Chat.find({deleted:{$ne: true} }).sort({updatedAt: -1});
     if (!chats) throw Error("No chats exist");
     res.json(chats);
   } catch (e) {
