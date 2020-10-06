@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/userModel");
+const User = require("../models/User");
 
 
 /**
@@ -51,7 +51,7 @@ router.get("/get-all", async (req, res) => {
  */
 
 router.post("/get-one", (req, res) => {
-  User.findById(req.body.id)
+  User.findOne({ _id: req.body.id })
     .then((doc) => {
       res.json(doc);
     })
@@ -82,6 +82,27 @@ router.put("/update/:id", (req, res) => {
       console.log(err);
     });
   res.status(200);
+});
+
+
+
+/**
+ * @route   GET /users/get-all-admins
+ * @desc    Retrieve all admin users
+ * @access  Private
+ */
+
+router.get("/get-all-admins", async (req, res) => {
+  try {
+    const users = await User.find({ role: "admin" });
+    if (!users) throw Error("No users exist");
+    console.log(users)
+    res.json(users);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+
+
+  }
 });
 
 module.exports = router;
