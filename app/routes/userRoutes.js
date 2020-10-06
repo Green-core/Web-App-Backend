@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/userModel");
+const User = require("../models/User");
 
 
 /**
@@ -51,7 +51,7 @@ router.get("/get-all", async (req, res) => {
  */
 
 router.post("/get-one", (req, res) => {
-  User.findById(req.body.id)
+  User.findOne({ _id: req.body.id })
     .then((doc) => {
       res.json(doc);
     })
@@ -86,8 +86,8 @@ router.put("/update/:id", (req, res) => {
 
 
 /**
- * @route   GET /users/get-all
- * @desc    Retrieve all users
+ * @route   GET /users/get-all-admins
+ * @desc    Retrieve all admin users
  * @access  Private
  */
 
@@ -103,6 +103,5 @@ router.get("/get-all-admins", async (req, res) => {
 
   }
 });
-
 
 module.exports = router;
