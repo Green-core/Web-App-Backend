@@ -103,7 +103,7 @@ router.post("/get-one", (req, res) => {
 
 router.get("/get-all-unread", async (req, res) => {
   try {
-    const chats = await Chat.find({ $and:[{newFromUser: true}, {deleted:{$ne: true} }]});
+    const chats = await Chat.find({ $and:[{newFromUser: true}, {deleted:{$ne: true} }]}).sort({updatedAt: -1});
     if (!chats) throw Error("No chats exist");
     res.json(chats);
   } catch (e) {

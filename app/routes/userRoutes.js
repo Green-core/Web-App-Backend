@@ -85,6 +85,7 @@ router.put("/update/:id", (req, res) => {
 });
 
 
+
 /**
  * @route   GET /users/get-all-admins
  * @desc    Retrieve all admin users
@@ -93,8 +94,27 @@ router.put("/update/:id", (req, res) => {
 
 router.get("/get-all-admins", async (req, res) => {
   try {
-    const users = await User.find({role: "admin"});
-    if (!users) throw Error("No admins exist");
+    const users = await User.find({ role: "admin" });
+    if (!users) throw Error("No users exist");
+    console.log(users)
+    res.json(users);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+
+
+  }
+});
+
+/**
+ * @route   GET /users/get-all-gardners
+ * @desc    Retrieve all gardners
+ * @access  Private
+ */
+
+router.get("/get-all-gardners", async (req, res) => {
+  try {
+    const users = await User.find({ role: "user" });
+    if (!users) throw Error("No users exist");
     console.log(users)
     res.json(users);
   } catch (e) {
