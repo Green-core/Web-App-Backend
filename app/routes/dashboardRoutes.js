@@ -16,7 +16,7 @@ const { find } = require("../models/chatModel")
 
 router.get("/get-total-users", async (req, res) => {
   try {
-    const users = await User.find({deleted:{$ne: true} }).count()
+    const users = await User.find({ role: "user" }).count()
     if (!users) throw Error("No users exist")
     res.json({result:users, status: 200});
   } catch (e) {
@@ -85,6 +85,25 @@ router.get("/get-total-unread-chats", async (req, res) => {
 
 router.post("/district-unit-count", async (req, res) => {
   Units.find({ "location": req.body.location }).count()
+  .then((result) => {
+    res.json(result);
+    res.status(200)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400)
+  });
+})
+
+
+/**
+ * @route POST /dashboard/district-user-count
+ * @desc Get user count per district
+ * @access Private
+ */
+
+router.post("/district-user-count", async (req, res) => {
+  User.find({ "location": req.body.location }).count()
   .then((result) => {
     res.json(result);
     res.status(200)
