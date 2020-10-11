@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Chat = require("../models/chatModel")
-const User = require("../models/userModel")
+const User = require("../models/User")
 const Units = require("../models/unitModel")
 const Plant = require("../models/plantTips.model.js");
 const { ObjectId } = require('mongodb');
